@@ -1,0 +1,89 @@
+<!DOCTYPE <html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admission Portal | H D Memorial Public School</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 py-10 px-4">
+
+  <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-xl">
+    <h1 class="text-3xl font-bold text-center text-blue-900 mb-6">Student Admission Form</h1>
+
+    <form id="admissionForm" enctype="multipart/form-data" class="space-y-4">
+      <div class="grid md:grid-cols-2 gap-4">
+        <input type="text" name="studentName" required placeholder="Student Name" class="w-full border px-4 py-2 rounded" />
+        <input type="date" name="dob" required placeholder="Date of Birth" class="w-full border px-4 py-2 rounded" />
+      </div>
+      <div class="grid md:grid-cols-2 gap-4">
+        <input type="text" name="fatherName" required placeholder="Father's Name" class="w-full border px-4 py-2 rounded" />
+        <input type="text" name="motherName" required placeholder="Mother's Name" class="w-full border px-4 py-2 rounded" />
+      </div>
+      <input type="text" name="address" required placeholder="Full Residential Address" class="w-full border px-4 py-2 rounded" />
+      <div class="grid md:grid-cols-2 gap-4">
+        <input type="tel" name="fatherMobile" required pattern="[0-9]{10}" title="Enter 10 digit number" placeholder="Father's Mobile No." class="w-full border px-4 py-2 rounded" />
+        <input type="tel" name="motherMobile" required pattern="[0-9]{10}" title="Enter 10 digit number" placeholder="Mother's Mobile No." class="w-full border px-4 py-2 rounded" />
+      </div>
+      <input type="tel" name="whatsappNumber" required pattern="[0-9]{10}" title="Enter 10 digit number" placeholder="Student WhatsApp Number" class="w-full border px-4 py-2 rounded" />
+      <div class="grid md:grid-cols-2 gap-4">
+        <input type="text" name="previousSchool" placeholder="Previous School Name (if any)" class="w-full border px-4 py-2 rounded" />
+        <input type="text" name="percentage" placeholder="Percentage in Previous Class (if applicable)" class="w-full border px-4 py-2 rounded" />
+      </div>
+      <div>
+        <label class="block mb-2 font-medium">Upload Student Image:</label>
+        <input type="file" name="studentImage" accept="image/*" required class="w-full border px-4 py-2 rounded" />
+      </div>
+
+      <!-- QR Payment and UTR Field -->
+      <div class="bg-gray-50 p-4 rounded border mt-6">
+        <p class="font-semibold text-gray-800 mb-2">Scan and Pay Admission Fee of ₹200</p>
+        <img src="/Images/qr.jpeg" alt="QR Code" class="w-48 mx-auto" />
+        <input type="text" name="utrNumber" required placeholder="Enter UTR/Transaction Number" class="w-full mt-4 border px-4 py-2 rounded" />
+      </div>
+
+      <button type="submit" class="mt-6 w-full bg-blue-700 text-white py-3 rounded hover:bg-blue-800">Submit Registration</button>
+    </form>
+
+    <p class="mt-6 text-sm text-center text-gray-500">All data will be securely sent to the school and saved.</p>
+  </div>
+<script>
+document.getElementById('admissionForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const form = e.target;
+  const data = {
+    studentName: form.studentName.value,
+    dob: form.dob.value,
+    fatherName: form.fatherName.value,
+    motherName: form.motherName.value,
+    address: form.address.value,
+    fatherMobile: form.fatherMobile.value,
+    motherMobile: form.motherMobile.value,
+    whatsappNumber: form.whatsappNumber.value,
+    previousSchool: form.previousSchool.value,
+    percentage: form.percentage.value,
+    utrNumber: form.utrNumber.value
+  };
+
+  try {
+    const res = await fetch('https://script.google.com/macros/s/AKfycbyx_4SE1rD06yFJMHGtTAYRv4YkLhIlSMvcAtMGXqr1YIOdn1PmHe6hNELll2uAZBvhpA/exec', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const text = await res.text();
+    if (res.ok && text.includes('SUCCESS')) {
+      alert('✅ Registration Submitted!');
+      form.reset();
+    } else {
+      alert('❌ Error: ' + text);
+    }
+  } catch (err) {
+    alert('❌ Network error: ' + err);
+  }
+});
+</script>
+
+</body>
+</html>
